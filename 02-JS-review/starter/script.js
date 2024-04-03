@@ -66,7 +66,7 @@ const data = [
     publicationDate: '1965-01-01',
     author: 'Frank Herbert',
     genres: ['science fiction', 'novel', 'adventure'],
-    hasMovieAdaptation: true,
+    hasMovieAdaptation: false,
     pages: 658,
     translations: {
       spanish: '',
@@ -143,7 +143,7 @@ function getBook(id) {
   return data.find((d) => d.id === id);
 }
 
-// DESTRUCTURING
+/* // DESTRUCTURING
 
 // objects
 const book = getBook(2);
@@ -216,3 +216,85 @@ console.log(book.translations.spanish);
 
 const spanishTranslation = book.translations.spanish || 'not traslated';
 spanishTranslation;
+
+// OPTIONAL CHAINING
+function getTotalReviewCount(book) {
+  const goodreads = book.reviews.goodreads?.reviewsCount;
+  const librarything = book.reviews.librarything?.reviewsCount ?? 0;
+  return goodreads + librarything;
+}
+
+console.log(getTotalReviewCount(book)); */
+
+/* // THE ARRAY MAP, FILTER AND REDUCE METHODS - (they do not alter original array)
+const books = getBooks();
+
+const x = [1, 2, 3, 4, 5].map((el) => el * 2);
+console.log(x);
+
+const titles = books.map((book) => book.title);
+titles;
+
+const essentialData = books.map((book) => ({
+  title: book.title,
+  author: book.author,
+}));
+essentialData;
+
+const longBooks = books
+  .filter((el) => el.pages > 500)
+  .filter((book) => book.hasMovieAdaptation);
+longBooks;
+
+const adventureBooks = books
+  .filter((books) => books.genres.includes('adventure'))
+  .map((book) => book.title);
+adventureBooks;
+
+const pagesAllBooks = books.reduce((sum, book) => sum + book.pages, 0);
+pagesAllBooks;
+
+// sorted mutates the original array / object
+const arr = [3, 2, 7, 1, 9, 3];
+// can use slice() to make a copy of the arr and not mutate the original (better practice)
+const sorted = arr.slice().sort((a, b) => a - b); // a - b ascending , b - a descending order
+arr;
+sorted;
+
+const sortedByPages = books.slice().sort((a, b) => b.pages - a.pages);
+sortedByPages;
+
+// 1. add a book object to array
+const newBook = {
+  id: 6,
+  title: 'harry potter and the chamber of secrets',
+  author: 'J. K. Rowling',
+};
+
+const booksAfterAdd = [...books, newBook];
+booksAfterAdd;
+
+// 2. delete book object from array
+const booksAfterDelete = booksAfterAdd.filter((book) => book.id !== 3);
+booksAfterDelete;
+
+// 3. update a book object in array
+const booksAfterUpdate = booksAfterDelete.map((book) =>
+  book.id === 1 ? { ...book, pages: 1210 } : book
+);
+booksAfterUpdate;
+ */
+
+// fetch('https://jsonplaceholder.typicode.com/todos')
+//   .then((response) => response.json())
+//   .then((json) => console.log(json));
+
+// console.log('aleks');
+
+async function getTodos() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+  const data = await res.json();
+  console.log(data);
+}
+
+getTodos();

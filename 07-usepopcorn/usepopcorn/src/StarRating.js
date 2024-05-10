@@ -68,7 +68,7 @@ function Star({ onRate, full, onHoverIn, onHoverOut, color, size }) {
       style={starStyle}
       onClick={onRate}
       onMouseEnter={onHoverIn}
-      onmouseleave={onHoverOut}
+      onMouseLeave={onHoverOut}
     >
       {full ? (
         <svg

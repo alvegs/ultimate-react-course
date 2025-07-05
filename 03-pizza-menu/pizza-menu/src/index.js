@@ -59,7 +59,7 @@ function App() {
 
 function Header() {
   return (
-    <header className='header footer'>
+    <header className='header'>
       <h1>Fast React Pizza Co.</h1>
     </header>
   );
@@ -74,17 +74,26 @@ function Menu() {
       <h2>Our menu</h2>
 
       {numPizzas > 0 ? (
-        <ul className='pizzas'>
-          {pizzas.map((p) => (
-            <Pizza
-              key={p.name}
-              name={p.name}
-              ingredients={p.ingredients}
-              photoName={p.photoName}
-              price={p.price}
-            />
-          ))}
-        </ul>
+        // fragment - let's us group things together without appearing as a parent element in the DOM-tree (Use <React.Fragment> if we need key)
+        <>
+          <p>
+            Authentic Italian cuisine. 6 creative dishes to choose from. All
+            from our stone oven, all organic, all delicious.
+          </p>
+
+          <ul className='pizzas'>
+            {pizzas.map((p) => (
+              <Pizza
+                key={p.name}
+                name={p.name}
+                ingredients={p.ingredients}
+                photoName={p.photoName}
+                price={p.price}
+                soldOut={p.soldOut}
+              />
+            ))}
+          </ul>
+        </>
       ) : (
         <p>We're still working on our menu. Please come back later!</p>
       )}
@@ -92,14 +101,14 @@ function Menu() {
   );
 }
 
-function Pizza({ name, ingredients, photoName, price }) {
+function Pizza({ name, ingredients, photoName, price, soldOut }) {
   return (
-    <li className='pizza'>
+    <li className={`pizza ${soldOut ? 'sold-out' : ''}`}>
       <img src={photoName} alt={name} />
       <div>
         <h3>{name}</h3>
         <p>{ingredients}</p>
-        <span>{price}</span>
+        <span>{soldOut ? 'Sold Out' : price}</span>
       </div>
     </li>
   );
@@ -114,16 +123,25 @@ function Footer() {
   return (
     <footer className='footer'>
       {isOpen ? (
-        <div className='order'>
-          <p>We're open until {closeHour}:00. Come visit us or order online.</p>
-          <button className='btn'>Order</button>
-        </div>
+        <Order closeHour={closeHour} openHour={openHour} />
       ) : (
         <p>
           We're happy to welcome you between {openHour}:00 and {closeHour}:00.
         </p>
       )}
     </footer>
+  );
+}
+
+function Order({ closeHour, openHour }) {
+  return (
+    <div className='order'>
+      <p>
+        We're open from {openHour}:00 to {closeHour}:00. Come visit us or order
+        online.
+      </p>
+      <button className='btn'>Order</button>
+    </div>
   );
 }
 
